@@ -1,8 +1,21 @@
 <script>
-import { RouterLink, RouterView } from 'vue-router'
+import { mapActions } from 'pinia'
+import tasks from './stores/tasks'
+import AuthenticationView from './views/HomeView.vue';
+import HomeView from './views/AuthenticationView.vue';
 
 export default {
   name: 'App',
+  components: {
+    AuthenticationView,
+    HomeView,
+  },
+  methods: {
+    ...mapActions(tasks, ['fetchAllTasks'])
+  },
+  created() {
+    this.fetchAllTasks()
+  },
 }
 </script>
 
@@ -13,10 +26,14 @@ export default {
         <RouterLink to="/">Home</RouterLink>
       </nav>
     </div>
+    <div>
+      <HomeView />
+      <AuthenticationView />
+    </div>
   </header>
 
-  <RouterView />
 </template>
+
 
 <style scoped>
 header {
