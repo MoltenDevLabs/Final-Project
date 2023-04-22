@@ -1,9 +1,7 @@
-// /store/task.js
-
 import { defineStore } from 'pinia';
 import supabase from '../supabase/index';
 
-export default defineStore('tasks', {
+export default defineStore('taskStore', {
   state() {
     return {
       taskList: []
@@ -26,7 +24,7 @@ export default defineStore('tasks', {
       const { data, error } = await supabase
         .from('tasks')
         .insert({ title, user_id })
-        //.select()
+        .select()
 
       if (error) {
         console.error(error)

@@ -1,37 +1,49 @@
 <script>
-import { mapActions } from 'pinia'
-import tasks from './stores/tasks'
-import AuthenticationView from './views/HomeView.vue';
-import HomeView from './views/AuthenticationView.vue';
+//import { mapActions, mapState } from 'pinia'
+//import userStore from '@/stores/user'
+//import HomeView from './views/HomeView.vue';
+//import AuthenticationView from './views/Authentication/AuthenticationView.vue';
+//import { RouterView } from 'vue-router';
 
 export default {
   name: 'App',
-  components: {
-    AuthenticationView,
-    HomeView,
+  //components: {
+   // AuthenticationView,
+   // HomeView,
+  //},
+/*   computed: {
+    ...mapState(userStore, ['user'])
   },
   methods: {
-    ...mapActions(tasks, ['fetchAllTasks'])
+    ...mapActions(userStore, ['fetchUser']),
+     checkUserExists() { //tot aquest tema de la redirecció s'hauria de posar al router
+      console.log(this.user)
+      if (this.user) {
+        this.$router.push({ path: '/' })
+      } else {
+        this.$router.push({ path: '/auth/sign-in' })
+      }
+    }
   },
-  created() {
-    this.fetchAllTasks()
+  async created() {
+    try {
+      await this.fetchUser()
+    } catch (error) {
+      console.error(error)
+    }
   },
+  watch: {
+    user() {
+      this.checkUserExists()
+    }
+  } */
 }
 </script>
 
 <template>
-  <header>
-    <div class="wrapper">
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-      </nav>
-    </div>
-    <div>
-      <HomeView />
-      <AuthenticationView />
-    </div>
-  </header>
-
+  <div>
+    <RouterView />
+  </div>
 </template>
 
 
