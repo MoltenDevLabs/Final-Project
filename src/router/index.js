@@ -33,19 +33,17 @@ const router = createRouter({
   ]
 })
 
-router.beforeEach(async (to) => {
+router.beforeEach(async (to, from, next) => {
   const { name } = to;
   const store = userStore()
   await store.fetchUser()
 
   const { user } = store
 
-  if (!user && name !== 'sign-in' && name !== 'sign-up') { // ara no es pot navegar a sign-up
-    return { name: 'sign-in'} // s'ha de poder navegar a sign-in o a sign-up, no nomes a sign-in
-
-  }
-  if (user && name == 'sign-in' || name == 'sign-up') {
-    return { name: 'home'}
+  if (!user && name !== 'sign-in' && name !== 'sign-up') {
+    next({ name: 'sign-in' });
+  } else {
+    next()
   }
 })
 
