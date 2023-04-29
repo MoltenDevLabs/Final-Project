@@ -3,43 +3,19 @@
     <div class="popup-inner">
       <slot />
 
-      <button @click="handleSignIn()">Sign in</button>
-      <button class="popup-close" @click="togglePopup()">X</button>
+      <button class="btn btn-popup-close" @click="togglePopup()"></button>
     </div>
   </div>
 </template>
 
 <script>
-import { mapActions } from 'pinia'
-import userStore from '@/stores/user'
-
+import '@/assets/main.css'
 export default {
   name: 'SignInPopup',
-  data() {
-    return {
-      email: '',
-      password: ''
-    }
-  },
   props: {
     togglePopup: {
       type: Function,
       required: true
-    }
-  },
-  methods: {
-    ...mapActions(userStore, ['signIn']),
-    async handleSignIn() {
-      try {
-        const userData = {
-          email: this.email, //"pol@gmail.com",
-          password: this.password, //"contra" //aixo esta per fer proves, en realitat ho ha d'introduir l'usuari amb un input
-        }
-        await this.signIn(userData)
-        this.$router.push({ name: 'home' })
-      } catch (error) {
-        console.error(error)
-      }
     }
   }
 }
@@ -53,24 +29,46 @@ export default {
   bottom: 0;
   right: 0;
   z-index: 99;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(25, 0, 25, 0.5);
+
+  backdrop-filter: blur(8px);
 
   display: flex;
   align-items: center;
   justify-content: center;
 }
 .popup-inner {
-  background: white;
-  padding: 32px;
+  background: #FBE4D8;
+  border-radius: 12px;
+  margin: 0;
+  position: relative;
 }
-.popup-close {
+.btn-popup-close {
   position: absolute;
-  top: 7px;
-  right: 7px;
-  cursor: pointer;
-  background-color: white;
+  top: 3%;
+  right: 3%;
+  height: 1.5em;
+  width: 1.5em;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-.popup-close:hover {
-  background-color: red;
+
+.btn-popup-close::before,
+.btn-popup-close::after {
+  content: "";
+  position: absolute;
+  width: 2px;
+  height: 1em;
+  background-color: #FBE4D8;
+}
+
+.btn-popup-close::before {
+  transform: rotate(45deg);
+}
+
+.btn-popup-close::after {
+  transform: rotate(-45deg);
 }
 </style>

@@ -1,9 +1,46 @@
-@import './base.css';
+@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed');
+
+
+html, body {
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 2.2;
+  margin: 0;
+  padding: 0;
+}
 
 #app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 2.2;
+  margin: 0;
+  padding: 0;
+}
 
-  font-weight: normal;
+.btn {
+  background: linear-gradient(to bottom right, #2B124C, #854F6C);
+  border: 0;
+  border-radius: 12px;
+  color: #FBE4D8;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 2.2;
+  outline: transparent;
+  padding: 0 1rem;
+  text-align: center;
+  text-decoration: none;
+  transition: box-shadow .2s ease-in-out;
+  user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+}
+.btn:not([disabled]):focus {
+  box-shadow: 0 0 .25rem rgba(25, 0, 25, 0.5), -.125rem -.125rem 1rem rgba(82, 43, 88, 0.5), .125rem .125rem 1rem rgba(223, 182, 178, 0.5);
+}
+.btn:not([disabled]):hover {
+  box-shadow: 0 0 .25rem rgba(25, 0, 25, 0.5), -.125rem -.125rem 1rem rgba(82, 43, 88, 0.5), .125rem .125rem 1rem rgba(223, 182, 178, 0.5);
 }
