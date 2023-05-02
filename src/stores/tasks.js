@@ -17,7 +17,7 @@ export default defineStore('taskStore', {
         console.error(error)
         return
       }
-      console.log(data)
+      console.log('taskStore data: ', data)
       this.taskList = data
     },
 

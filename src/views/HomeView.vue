@@ -1,96 +1,61 @@
 <template>
-  <h1>HomeView</h1>
-  <button class="btn btn-logout" @click="handleSignOut()">Log out</button>
+  <div class="subnavbar-wrapper">
+    <button class="btn btn-card" @click="handleSignOut()">
+      <img class="card-img" src="@/assets/logout.svg" alt="Log out" />
+    </button>
+    <button class="btn btn-card" @click="() => togglePopup('addTask')">
+      <img class="card-img" src="@/assets/add.svg" alt="Add task" />
+    </button>
+  </div>
 
   <div>
-    <button class="btn btn-addtask-home" @click="() => togglePopup('addTask')">Add Task</button>
     <TaskPopup v-if="popupTriggers.addTask" :togglePopup="() => togglePopup('addTask')">
-      <label for="title">Title</label>
-      <input
-        type="text"
-        placeholder="Title"
-        v-model="this.newTaskTitle"
-        @keypress.enter="
-          handleAddNewTask({
-            title: this.newTaskTitle,
-            description: this.newTaskDescription,
-            user_id: user.id
-          })"
-      />
-      <label for="description">Description</label>
-      <textarea
-        type="text"
-        placeholder="Add a short description"
-        v-model="this.newTaskDescription"
-      ></textarea>
+      <form @submit.prevent class="form-wrapper">
+        <label class="form-label" for="title">Title</label>
+        <input class="form-input" type="text" placeholder="Title" v-model="this.newTaskTitle" />
+        <label class="form-label" for="description">Description</label>
+        <textarea
+          class="form-input"
+          type="text"
+          placeholder="Add a short description"
+          rows="4"
+          cols="20"
+          v-model="this.newTaskDescription"
+        ></textarea>
 
-      <button
-        @click="
-          handleAddNewTask({
-            title: this.newTaskTitle,
-            description: this.newTaskDescription,
-            user_id: user.id
-          })"
-      >
-        Add Task
-      </button>
+        <button
+          class="btn btn-form"
+          @click="
+            handleAddNewTask({
+              title: this.newTaskTitle,
+              description: this.newTaskDescription,
+              user_id: user.id
+            })
+          "
+        >
+          Add Task
+        </button>
+      </form>
     </TaskPopup>
   </div>
 
   <div v-if="taskList.length">
     <ul>
       <li v-for="task in taskList" :key="task.id">
-        <div :class="{'completed-task': task.is_complete}">
-          <input type="checkbox" :checked="task.is_complete" @click="handleTaskCompleted(task)">
-        </div> 
-        <h4>{{ task.title }}</h4>
-        <p>{{ task.description }}</p>
-
-        <button class="btn btn-addtask-update" @click="() => togglePopup('updateTask', task)">
-          Update Task
-        </button>
-        <UpdateTaskPopup
-          v-if="popupTriggers.updateTask && selectedTask === task"
-          :togglePopup="() => togglePopup('updateTask', task)"
-          :task="task"
-        >
-          <label for="title">Title</label>
-          <input
-            type="text"
-            placeholder="Title"
-            v-model="task.title"
-            @keypress.enter="
-              handleUpdateTask({ title: task.title, description: task.description, id: task.id })"
-          />
-          <label for="description">Description</label>
-          <textarea
-            type="text"
-            placeholder="Add a short description"
-            v-model="task.description"
-          ></textarea>
-
-          <button
-            @click="
-              handleUpdateTask({ title: task.title, description: task.description, id: task.id })"
-          >
-            Update
-          </button>
-        </UpdateTaskPopup>
-
-        <button class="btn btn-li" @click="deleteTask(task.id)">Delete Task</button>
+        <TaskCard :task="task" />
       </li>
     </ul>
   </div>
-  <div v-else>Hi Boss! Start by adding a task!</div>
+  <h4 v-else class="text-without-tasks">Hi Boss! Start by adding a task!</h4>
 </template>
 
 <script>
-import { ref } from 'vue'
 import { mapActions, mapState } from 'pinia'
-import taskStore from '../stores/tasks'
+import taskStore from '@/stores/tasks'
 import userStore from '@/stores/user'
 import TaskPopup from './Authentication/Popups/TaskPopup.vue'
-import UpdateTaskPopup from './Authentication/Popups/UpdateTaskPopup.vue'
+import TaskCard from '../components/TaskCard.vue'
+import { useToast } from 'vue-toastification'
 
 export default {
   name: 'HomeView',
@@ -98,36 +63,19 @@ export default {
     return {
       newTaskTitle: '',
       newTaskDescription: '',
-      is_complete: false
-    }
-  },
-  setup() {
-    const popupTriggers = ref({
-      buttonTrigger: false,
-      addTask: false,
-      updateTask: false
-    })
-
-    const selectedTask = ref(null)
-
-    const togglePopup = (trigger, task = null) => {
-      popupTriggers.value[trigger] = !popupTriggers.value[trigger]
-      if (task) {
-        selectedTask.value = task
-      }
-    }
-
-    return {
-      TaskPopup,
-      UpdateTaskPopup,
-      popupTriggers,
-      selectedTask,
-      togglePopup
+      is_complete: false,
+      popupTriggers: {
+        buttonTrigger: false,
+        addTask: false,
+        updateTask: false
+      },
+      selectedTask: null,
+      toast: useToast()
     }
   },
   components: {
     TaskPopup,
-    UpdateTaskPopup
+    TaskCard
   },
   computed: {
     ...mapState(taskStore, ['taskList']),
@@ -137,50 +85,62 @@ export default {
     ...mapActions(taskStore, ['addNewTask', 'fetchAllTasks', 'updateTask', 'deleteTask']),
     ...mapActions(userStore, ['signOut']),
 
+    togglePopup(trigger, task = null) {
+      this.popupTriggers[trigger] = !this.popupTriggers[trigger]
+      if (task) {
+        this.selectedTask = task
+      }
+    },
+
     async handleSignOut() {
       try {
         await this.signOut()
+        this.toast.success('Bye Boss')
         this.$router.push({ name: 'sign-in' })
       } catch (error) {
+        this.toast.error("Couldn't sign out")
         console.error(error)
       }
     },
 
     async handleAddNewTask(task) {
-      if (task.title.length < 3) {
-        throw new Error ('Title must be at least 3 characters')
+      if (task.title.length < 4) {
+        this.toast.error('Title must be at least 4 characters')
+        throw new Error('Title must be at least 4 characters')
       }
       await this.addNewTask(task)
+      this.toast.success('Task added')
       this.newTaskTitle = ''
       this.newTaskDescription = ''
       this.togglePopup('addTask')
     },
 
-    async handleUpdateTask(task) {
-      if (task.title.length < 3) {
-        throw new Error ('Title must be at least 3 characters')
-      }
-      await this.updateTask(task)
-      task.title = ''
-      task.description = ''
-      this.togglePopup('updateTask')
-    },
-
-    async handleTaskCompleted(task) {
-      task.is_complete = !task.is_complete;
-      await this.updateTask({
-      id: task.id,
-      title: task.title,
-      description: task.description,
-      is_complete: task.is_complete
-      });
+    created() {
+      this.fetchAllTasks()
     }
-  },
-
-  created() {
-    this.fetchAllTasks()
   }
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.subnavbar-wrapper {
+  display: flex;
+  flex-direction: row-reverse;
+  margin: 0 1.5vh;
+}
+ul {
+  list-style: none;
+  padding: 1vh;
+}
+li {
+  margin: 1vh 0;
+}
+.text-without-tasks {
+  align-items: center;
+  display: flex;
+  margin: 4vh;
+  justify-content: center;
+  border: 8px solid #522b58;
+  border-radius: 12px;
+}
+</style>

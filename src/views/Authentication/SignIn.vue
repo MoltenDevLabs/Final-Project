@@ -3,129 +3,126 @@
     <div class="wrapper main-wrapper">
       <h1 class="main-wrapper-title">Hi Boss!</h1>
       <h3 class="main-wrapper-text">Welcome to the most evil task manager</h3>
-      <button class="btn btn-login" @click="() => togglePopup('buttonTrigger')">Log in</button>
+      <button class="btn btn-login" @click="() => togglePopup('signIn')">Log in</button>
     </div>
 
     <div class="wrapper signup-wrapper">
       <p class="signup-text">Dont have an account?</p>
-      <router-link class="btn" to="/auth/sign-up">Sign up</router-link>
+      <button class="btn btn-signup" @click="() => togglePopup('signUp')">Sign up</button>
     </div>
 
     <SignInPopup
-      v-if="popupTriggers.buttonTrigger"
-      :togglePopup="() => togglePopup('buttonTrigger')"
+      v-if="popupTriggers.signIn"
+      :togglePopup="() => togglePopup('signIn')"
     >
       <form class="form-wrapper" @submit.prevent="handleSignIn()">
-        <label class="email-label" for="email">email</label>
-        <input class="email-input" v-model="email" type="email" placeholder="email" autocomplete="email" required/>
+        <label class="form-label" for="email">Email</label>
+        <input class="form-input" v-model="email" type="email" placeholder="email" autocomplete="email" required/>
         <!-- autocomplete no funciona bé, cal preguntar -->
-        <label class="password-label" for="password">password</label>
-        <input class="password-input" v-model="password" type="password" placeholder="password" autocomplete="password" required/>
+        <label class="form-label" for="password">Password</label>
+        <input class="form-input" v-model="password" type="password" placeholder="password" autocomplete="password" required/>
         <!-- autocomplete no funciona bé, cal preguntar -->
-        <button class="btn btn-login-form" type="submit">Log In</button>
+        <button class="btn btn-form" type="submit">Log In</button>
       </form>
     </SignInPopup>
+
+    <SignUpPopup
+      v-if="popupTriggers.signUp"
+      :togglePopup="() => togglePopup('signUp')"
+    >
+      <form class="form-wrapper" @submit.prevent="validateForm()">
+        <label class="form-label" for="email">Email</label>
+        <input class="form-input" v-model="email" type="email" placeholder="email" autocomplete="email" required/>
+        <!-- autocomplete no funciona bé, cal preguntar -->
+        <label class="form-label" for="password">Password</label>
+        <input class="form-input" v-model="password" type="password" placeholder="password" autocomplete="password" minlength="8" required/>
+        <label class="form-label" for="passwordTwo">Confirm password</label>
+        <input class="form-input" v-model="passwordTwo" type="password" placeholder="confirm password" autocomplete="password" minlength="8" required/>
+        <!-- autocomplete no funciona bé, cal preguntar -->
+        <button class="btn btn-form" type="submit">Sign Up</button>
+      </form>
+    </SignUpPopup>
+
   </div>
 </template>
 
 <script>
 import '@/assets/main.css'
-import { ref } from 'vue'
 import { mapActions, mapState } from 'pinia'
 import userStore from '@/stores/user'
 import SignInPopup from './Popups/SignInPopup.vue'
+import SignUpPopup from './Popups/SignUpPopup.vue'
+import { useToast } from "vue-toastification";
 
 export default {
   name: 'AutheticationView',
   data() {
     return {
       email: '',
-      password: ''
-    }
-  },
-  setup() {
-    const popupTriggers = ref({
-      buttonTrigger: false
-    })
-
-    const togglePopup = (trigger) => {
-      popupTriggers.value[trigger] = !popupTriggers.value[trigger]
-    }
-
-    return {
-      SignInPopup,
-      popupTriggers,
-      togglePopup
+      password: '',
+      passwordTwo: '',
+      popupTriggers: {
+        buttonTrigger: false,
+      },
+      selectedTask: null,
+      toast: useToast()
     }
   },
   components: {
-    SignInPopup
+    SignInPopup,
+    SignUpPopup
   },
   computed: {
     ...mapState(userStore, ['user'])
   },
   methods: {
-    ...mapActions(userStore, ['signIn']),
+    ...mapActions(userStore, ['signIn', 'signUp']),
+
+    togglePopup(trigger, task = null) {
+        this.popupTriggers[trigger] = !this.popupTriggers[trigger]
+        if (task) {
+            this.selectedTask = task
+        }
+    },
+
     async handleSignIn() {
       try {
         const userData = {
           email: this.email,
           password: this.password
         }
+        this.toast.success('Hello Boss')
         await this.signIn(userData)
         this.$router.push({ name: 'home' })
       } catch (error) {
+        this.toast.error("Couldn't log in, try again")
         console.error(error)
+      }
+    },
+
+    async handleSignUp() {
+      try {
+        const userData = {
+          email: this.email,
+          password: this.password,
+        }
+        await this.signUp(userData)
+        this.toast.success('Hello Boss')
+        this.$router.push({ name: 'home' })
+      } catch (error) {
+        this.toast.error("Couldn't sign up, try again")
+        console.error(error)
+      }
+    },
+
+    validateForm() {
+      if (this.password !== this.passwordTwo) {
+        this.toast.error('Passwords must be equal')
+        throw new Error ('Passwords must be equal')
+      } else {
+        this.handleSignUp()
       }
     },
   }
 }
 </script>
-
-<style scoped>
-.signin-wrapper {
-  margin: 4vh 4vh;
-}
-.wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-
-  margin: 12vh 4vh;
-}
-.form-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-
-  padding: 32px;
-}
-.email-label {
-  margin-top: 0vh;
-}
-.email-input {
-  margin-top: 1vh;
-  line-height: 1.5em;
-  padding-left: 0.5em;
-}
-.password-label {
-  margin-top: 4vh;
-}
-.password-input {
-  margin-top: 1vh;
-  line-height: 1.5em;
-  padding-left: 0.5em;
-}
-.btn-login-form {
-  margin-top: 4vh;
-}
-.main-wrapper-text {
-  margin: 2vh 0;
-  text-align: center;
-}
-.btn-login {
-  margin: 2vh 0;
-}
-</style>

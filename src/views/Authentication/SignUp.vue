@@ -11,12 +11,10 @@
       <form @submit.prevent="validateForm()">
         <label for="email">email</label>
         <input v-model="email" type="email" placeholder="email" autocomplete="email" required/>
-        <!-- autocomplete no funciona bé, cal preguntar -->
         <label for="password">password</label>
         <input v-model="password" type="password" placeholder="password" autocomplete="password" minlength="8" required/>
         <label for="passwordTwo">Confirm password</label>
         <input v-model="passwordTwo" type="password" placeholder="confirm password" autocomplete="password" minlength="8" required/>
-        <!-- autocomplete no funciona bé, cal preguntar -->
         <button type="submit">Sign Up</button>
       </form>
     </SignUpPopup>
@@ -24,7 +22,6 @@
 </template>
 
 <script>
-import { ref } from 'vue'
 import { mapActions, mapState } from 'pinia'
 import userStore from '@/stores/user'
 import SignUpPopup from './Popups/SignUpPopup.vue'
@@ -35,22 +32,13 @@ export default {
     return {
       email: '',
       password: '',
-      passwordTwo: ''
-    }
-  },
-  setup() {
-    const popupTriggers = ref({
-      buttonTrigger: false
-    })
-
-    const togglePopup = (trigger) => {
-      popupTriggers.value[trigger] = !popupTriggers.value[trigger]
-    }
-
-    return {
-      SignUpPopup,
-      popupTriggers,
-      togglePopup
+      passwordTwo: '',
+      popupTriggers: {
+        buttonTrigger: false,
+        addTask: false,
+        updateTask: false
+      },
+      selectedTask: null
     }
   },
   components: {
@@ -61,6 +49,14 @@ export default {
   },
   methods: {
     ...mapActions(userStore, ['signUp']),
+
+    togglePopup(trigger, task = null) {
+        this.popupTriggers[trigger] = !this.popupTriggers[trigger]
+        if (task) {
+            this.selectedTask = task
+        }
+    },
+
     async handleSignUp() {
       try {
         const userData = {
