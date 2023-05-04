@@ -29,6 +29,7 @@
           <form @submit.prevent class="form-wrapper">
             <label class="form-label" for="title">Title</label>
             <input
+              :class="[updateTitleError ? 'form-error' : '', updateTitleValid ? 'form-valid' : '']"
               class="form-input"
               type="text"
               placeholder="Title"
@@ -68,7 +69,7 @@
 import UpdateTaskPopup from '@/views/Authentication/Popups/UpdateTaskPopup.vue'
 import { mapActions, mapState } from 'pinia'
 import taskStore from '@/stores/tasks'
-import { useToast } from "vue-toastification"
+import { useToast } from 'vue-toastification'
 
 export default {
   name: 'TaskCard',
@@ -77,6 +78,8 @@ export default {
       newTaskTitle: '',
       newTaskDescription: '',
       is_complete: false,
+      updateTitleError: false,
+      updateTitleValid: false,
       popupTriggers: {
         addTask: false,
         updateTask: false
@@ -101,16 +104,20 @@ export default {
     ...mapActions(taskStore, ['fetchAllTasks', 'updateTask', 'deleteTask']),
 
     togglePopup(trigger, task = null) {
-        this.popupTriggers[trigger] = !this.popupTriggers[trigger]
-        if (task) {
-            this.newTaskTitle = task.title
-            this.newTaskDescription = task.description
-            this.selectedTask = task
-        }
+      this.popupTriggers[trigger] = !this.popupTriggers[trigger]
+      if (task) {
+        this.newTaskTitle = task.title
+        this.newTaskDescription = task.description
+        this.selectedTask = task
+        this.updateTitleError = false
+        this.updateTitleValid = false
+      }
     },
 
     async handleUpdateTask(task) {
       if (this.newTaskTitle.length < 4) {
+        this.updateTitleValid = false
+        this.updateTitleError = true
         this.toast.error('Title must be at least 4 characters')
         throw new Error('Title must be at least 4 characters')
       }
@@ -121,6 +128,8 @@ export default {
         is_complete: task.is_complete
       }
       await this.updateTask(updatedTask)
+      this.updateTitleError = false
+      this.updateTitleValid = true
       this.toast.success('Task updated')
       this.newTaskTitle = ''
       this.newTaskDescription = ''
@@ -150,6 +159,8 @@ export default {
   border: 1px solid black;
   border-radius: 12px;
   width: 66%;
+  box-shadow: 0 0 0.5rem rgba(25, 0, 25, 0.5), 0rem 0rem 0.5rem rgba(82, 43, 88, 0.5),
+    0rem 0rem 0.5rem rgba(223, 182, 178, 0.5);
 }
 .top-line-card-wrapper,
 p {

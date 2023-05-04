@@ -2,7 +2,6 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import AuthenticationView from '../views/Authentication/AuthenticationView.vue'
 import SignIn from '../views/Authentication/SignIn.vue'
-import SignUp from '../views/Authentication/SignUp.vue'
 import userStore from '@/stores/user'
 
 const router = createRouter({
@@ -23,11 +22,6 @@ const router = createRouter({
           name: 'sign-in',
           component: SignIn
         },
-        {
-          path: 'sign-up',
-          name: 'sign-up',
-          component: SignUp
-        }
       ]
     }
   ]
@@ -40,7 +34,7 @@ router.beforeEach(async (to, from, next) => {
 
   const { user } = store
 
-  if (!user && name !== 'sign-in' && name !== 'sign-up') {
+  if (!user && name !== 'sign-in') {
     next({ name: 'sign-in' });
   } else {
     next()

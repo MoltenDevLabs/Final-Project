@@ -7,6 +7,13 @@ export default defineStore('taskStore', {
       taskList: []
     }
   },
+
+  computed: {
+    taskListSorted() {
+      return [...this.taskList].sort((task1, task2) => task1.id - task2.id); // This is not working
+    }
+  },
+
   actions: {
     async fetchAllTasks() {
       const { data, error } = await supabase
@@ -17,7 +24,6 @@ export default defineStore('taskStore', {
         console.error(error)
         return
       }
-      console.log('taskStore data: ', data)
       this.taskList = data
     },
 

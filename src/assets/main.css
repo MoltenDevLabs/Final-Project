@@ -1,3 +1,15 @@
+/*  Palette
+
+CSS HEX
+
+--eggplant dark: #190019 rgb(25, 0, 25)
+--purple: #2B124C
+--light purple: #522B58 rgb(82, 43, 88)
+--ultra light purple: #854F6C
+--dark white: #DFB6B2 rgb(223, 182, 178)
+--white: #FBE4D8
+ */
+
 @import url('https://fonts.googleapis.com/css?family=Roboto+Condensed');
 
 
@@ -129,6 +141,14 @@ html, body {
   line-height: 1.5em;
   padding-left: 0.5em;
   resize: none
+}
+.form-error {
+  border: 2px solid red;
+  border-radius: 4px;
+}
+.form-valid {
+  border: 2px solid green;
+  border-radius: 4px;
 }
 .btn-form {
   margin-top: 4vh;

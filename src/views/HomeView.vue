@@ -12,7 +12,13 @@
     <TaskPopup v-if="popupTriggers.addTask" :togglePopup="() => togglePopup('addTask')">
       <form @submit.prevent class="form-wrapper">
         <label class="form-label" for="title">Title</label>
-        <input class="form-input" type="text" placeholder="Title" v-model="this.newTaskTitle" />
+        <input
+          :class="[addTitleError ? 'form-error' : '', addTitleValid ? 'form-valid' : '']"
+          class="form-input"
+          type="text"
+          placeholder="Title"
+          v-model="this.newTaskTitle"
+        />
         <label class="form-label" for="description">Description</label>
         <textarea
           class="form-input"
@@ -64,6 +70,8 @@ export default {
       newTaskTitle: '',
       newTaskDescription: '',
       is_complete: false,
+      addTitleError: false,
+      addTitleValid: false,
       popupTriggers: {
         buttonTrigger: false,
         addTask: false,
@@ -79,14 +87,17 @@ export default {
   },
   computed: {
     ...mapState(taskStore, ['taskList']),
-    ...mapState(userStore, ['user'])
+    ...mapState(userStore, ['user']),
   },
+
   methods: {
     ...mapActions(taskStore, ['addNewTask', 'fetchAllTasks', 'updateTask', 'deleteTask']),
     ...mapActions(userStore, ['signOut']),
 
     togglePopup(trigger, task = null) {
       this.popupTriggers[trigger] = !this.popupTriggers[trigger]
+      this.addTitleError = false
+      this.addTitleValid = false
       if (task) {
         this.selectedTask = task
       }
@@ -99,25 +110,26 @@ export default {
         this.$router.push({ name: 'sign-in' })
       } catch (error) {
         this.toast.error("Couldn't sign out")
-        console.error(error)
       }
     },
 
     async handleAddNewTask(task) {
       if (task.title.length < 4) {
+        this.addTitleValid = false
+        this.addTitleError = true
         this.toast.error('Title must be at least 4 characters')
-        throw new Error('Title must be at least 4 characters')
       }
       await this.addNewTask(task)
+      this.addTitleError = false
+      this.addTitleValid = true
       this.toast.success('Task added')
       this.newTaskTitle = ''
       this.newTaskDescription = ''
       this.togglePopup('addTask')
-    },
-
-    created() {
-      this.fetchAllTasks()
     }
+  },
+  async created() {
+    await this.fetchAllTasks()
   }
 }
 </script>
@@ -140,7 +152,7 @@ li {
   display: flex;
   margin: 4vh;
   justify-content: center;
-  border: 8px solid #522b58;
+  border: 6px solid #522b58;
   border-radius: 12px;
 }
 </style>
