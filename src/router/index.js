@@ -21,21 +21,21 @@ const router = createRouter({
           path: 'sign-in',
           name: 'sign-in',
           component: SignIn
-        },
+        }
       ]
     }
   ]
-});
+})
 
 router.beforeEach(async (to, from, next) => {
-  const { name } = to;
+  const { name } = to
   const store = userStore()
   await store.fetchUser()
 
   const { user } = store
 
   if (!user && name !== 'sign-in') {
-    next({ name: 'sign-in' });
+    next({ name: 'sign-in' })
   } else {
     next()
   }

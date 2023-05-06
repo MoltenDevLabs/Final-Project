@@ -13,7 +13,6 @@ export default defineStore('userStore', {
       } = await supabase.auth.getUser()
 
       this.user = user
-      // if (!user) throw new Error('User not found')
     },
 
     async signUp({ email, password }) {

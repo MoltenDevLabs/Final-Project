@@ -69,18 +69,18 @@
   </div>
 
   <div v-if="taskListSorted.length">
-      <ul id="wrapper-home">
-        <li v-for="task in taskListSorted" :key="task.id">
-          <TaskCard
-            :task="task"
-            :class="[
-              slideoutTaskCard === task.id ? 'task-card-out' : '',
-              slideinTaskCard === true ? 'task-card-in' : ''
-            ]"
-            @task-deleted="handleDeleteTask(task)"
-          />
-        </li>
-      </ul>
+    <ul id="wrapper-home">
+      <li v-for="task in taskListSorted" :key="task.id">
+        <TaskCard
+          :task="task"
+          :class="[
+            slideoutTaskCard === task.id ? 'task-card-out' : '',
+            slideinTaskCard === true ? 'task-card-in' : ''
+          ]"
+          @task-deleted="handleDeleteTask(task)"
+        />
+      </li>
+    </ul>
   </div>
   <h4 v-else class="text-without-tasks">No more tasks!</h4>
 </template>
@@ -117,7 +117,7 @@ export default {
   },
   components: {
     TaskPopup,
-    TaskCard,
+    TaskCard
   },
   computed: {
     ...mapState(taskStore, ['taskList']),

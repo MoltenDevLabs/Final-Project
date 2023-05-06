@@ -20,6 +20,6 @@ export default {
 html {
   margin: 0;
   padding: 0;
-  background-color: #FBE4D8;
+  background-color: #fbe4d8;
 }
 </style>

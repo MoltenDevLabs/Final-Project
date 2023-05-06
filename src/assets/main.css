@@ -12,8 +12,8 @@ CSS HEX
 
 @import url('https://fonts.googleapis.com/css?family=Roboto+Condensed');
 
-
-html, body {
+html,
+body {
   font-family: 'Roboto', sans-serif;
   font-size: 16px;
   font-weight: 500;
@@ -36,10 +36,10 @@ html, body {
 }
 
 .btn {
-  background: linear-gradient(to bottom right, #2B124C, #854F6C);
+  background: linear-gradient(to bottom right, #2b124c, #854f6c);
   border: 0;
   border-radius: 12px;
-  color: #FBE4D8;
+  color: #fbe4d8;
   cursor: pointer;
   display: inline-block;
   font-size: 16px;
@@ -49,16 +49,18 @@ html, body {
   padding: 0 1rem;
   text-align: center;
   text-decoration: none;
-  transition: box-shadow .2s ease-in-out;
+  transition: box-shadow 0.2s ease-in-out;
   user-select: none;
   touch-action: manipulation;
   white-space: nowrap;
 }
 .btn:not([disabled]):focus {
-  box-shadow: 0 0 .25rem rgba(25, 0, 25, 0.5), -.125rem -.125rem 1rem rgba(82, 43, 88, 0.5), .125rem .125rem 1rem rgba(223, 182, 178, 0.5);
+  box-shadow: 0 0 0.25rem rgba(25, 0, 25, 0.5), -0.125rem -0.125rem 1rem rgba(82, 43, 88, 0.5),
+    0.125rem 0.125rem 1rem rgba(223, 182, 178, 0.5);
 }
 .btn:not([disabled]):hover {
-  box-shadow: 0 0 .25rem rgba(25, 0, 25, 0.5), -.125rem -.125rem 1rem rgba(82, 43, 88, 0.5), .125rem .125rem 1rem rgba(223, 182, 178, 0.5);
+  box-shadow: 0 0 0.25rem rgba(25, 0, 25, 0.5), -0.125rem -0.125rem 1rem rgba(82, 43, 88, 0.5),
+    0.125rem 0.125rem 1rem rgba(223, 182, 178, 0.5);
 }
 
 /* POPUP STYLES */
@@ -78,7 +80,7 @@ html, body {
   justify-content: center;
 }
 .popup-inner {
-  background: #FBE4D8;
+  background: #fbe4d8;
   border-radius: 12px;
   margin: 0;
   position: relative;
@@ -97,11 +99,11 @@ html, body {
 
 .btn-popup-close::before,
 .btn-popup-close::after {
-  content: "";
+  content: '';
   position: absolute;
   width: 2px;
   height: 1em;
-  background-color: #FBE4D8;
+  background-color: #fbe4d8;
 }
 
 .btn-popup-close::before {
@@ -129,7 +131,7 @@ html, body {
   align-items: center;
   flex-direction: column;
 
-  margin: 6vh 4vh;
+  margin: 4vh;
 }
 .form-wrapper {
   display: flex;
@@ -139,7 +141,8 @@ html, body {
 
   border: 1px solid #190019;
   border-radius: 12px;
-  box-shadow: 0 0 2rem rgba(25, 0, 25, 0.5), 0rem 0rem 2rem rgba(82, 43, 88, 0.5), 0rem 0rem 2rem rgba(223, 182, 178, 0.5);
+  box-shadow: 0 0 2rem rgba(25, 0, 25, 0.5), 0rem 0rem 2rem rgba(82, 43, 88, 0.5),
+    0rem 0rem 2rem rgba(223, 182, 178, 0.5);
 
   padding: 32px;
 }
@@ -150,7 +153,7 @@ html, body {
   margin-top: 0vh;
   line-height: 1.5em;
   padding-left: 0.5em;
-  resize: none
+  resize: none;
 }
 .form-error {
   border: 2px solid red;
@@ -197,7 +200,7 @@ html, body {
     grid-template-columns: 1fr 1fr 1fr;
     grid-column-gap: 10px;
   }
-  .task-card-wrapper:nth-child(3n+2) {
+  .task-card-wrapper:nth-child(3n + 2) {
     margin-left: auto;
   }
 }
