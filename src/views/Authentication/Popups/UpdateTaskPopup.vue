@@ -24,9 +24,8 @@ export default {
   data() {
     return {
       newTaskTitle: '',
-      newTaskDescription: '',
-      updatedTask: {}
+      newTaskDescription: ''
     }
-  },
+  }
 }
 </script>

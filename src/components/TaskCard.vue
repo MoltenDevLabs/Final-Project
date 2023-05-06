@@ -2,7 +2,8 @@
   <div class="task-card-wrapper">
     <div class="top-line-card-wrapper">
       <div class="card-title-wrapper">
-        <h4 class="task-card-title">{{ task.title }}</h4>
+        <h4 v-if="task.title.length <= 18" class="task-card-title">{{ task.title }}</h4>
+        <h4 v-else class="task-card-title">{{ task.title.substring(0, 19) + '...' }}</h4>
       </div>
 
       <div class="btn-card-wrapper">
@@ -25,6 +26,8 @@
           v-if="popupTriggers.updateTask && selectedTask === task"
           :togglePopup="() => togglePopup('updateTask', task)"
           :task="task"
+          class="zoom-in-popup task-card-in"
+          :class="zoomOutPopup ? 'zoom-out-popup' : ''"
         >
           <form @submit.prevent class="form-wrapper">
             <label class="form-label" for="title">Title</label>
@@ -56,16 +59,18 @@
           </form>
         </UpdateTaskPopup>
 
-        <button class="btn btn-card" @click="handleDeleteTask(task)">
+        <button class="btn btn-card" @click="emitDeleteTask(task.id)">
           <img class="card-img" src="@/assets/delete.svg" alt="Delete task" />
         </button>
       </div>
     </div>
-    <p>{{ task.description }}</p>
+    <p v-if="task.description.length <= 33" class="task-card-description">{{ task.description }}</p>
+    <p v-else class="task-card-description">{{ task.description.substring(0, 34) + '...' }}</p>
   </div>
 </template>
 
 <script>
+import '@/assets/main.css'
 import UpdateTaskPopup from '@/views/Authentication/Popups/UpdateTaskPopup.vue'
 import { mapActions, mapState } from 'pinia'
 import taskStore from '@/stores/tasks'
@@ -80,6 +85,8 @@ export default {
       is_complete: false,
       updateTitleError: false,
       updateTitleValid: false,
+      slideoutTaskCard: false,
+      zoomOutPopup: false,
       popupTriggers: {
         addTask: false,
         updateTask: false
@@ -105,12 +112,13 @@ export default {
 
     togglePopup(trigger, task = null) {
       this.popupTriggers[trigger] = !this.popupTriggers[trigger]
+      this.updateTitleError = false
+      this.updateTitleValid = false
+      this.zoomOutPopup = false
       if (task) {
         this.newTaskTitle = task.title
         this.newTaskDescription = task.description
         this.selectedTask = task
-        this.updateTitleError = false
-        this.updateTitleValid = false
       }
     },
 
@@ -119,7 +127,6 @@ export default {
         this.updateTitleValid = false
         this.updateTitleError = true
         this.toast.error('Title must be at least 4 characters')
-        throw new Error('Title must be at least 4 characters')
       }
       const updatedTask = {
         id: task.id,
@@ -127,6 +134,7 @@ export default {
         description: this.newTaskDescription,
         is_complete: task.is_complete
       }
+      this.zoomOutPopup = true
       await this.updateTask(updatedTask)
       this.updateTitleError = false
       this.updateTitleValid = true
@@ -146,10 +154,12 @@ export default {
       })
     },
 
-    async handleDeleteTask(task) {
-      this.toast.success('Task deleted')
-      await this.deleteTask(task.id)
+    emitDeleteTask() {
+      this.$emit('task-deleted')
     }
+  },
+  mounted() {
+    console.log('Task:', this.task.id)
   }
 }
 </script>
@@ -158,12 +168,12 @@ export default {
 .task-card-wrapper {
   border: 1px solid black;
   border-radius: 12px;
-  width: 66%;
+  width: 100%;
   box-shadow: 0 0 0.5rem rgba(25, 0, 25, 0.5), 0rem 0rem 0.5rem rgba(82, 43, 88, 0.5),
     0rem 0rem 0.5rem rgba(223, 182, 178, 0.5);
 }
 .top-line-card-wrapper,
-p {
+.task-card-description {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -203,7 +213,6 @@ h4 {
   filter: invert(84%) sepia(20%) saturate(294%) hue-rotate(326deg) brightness(108%) contrast(97%);
   pointer-events: none;
 }
-
 .checkbox-card {
   appearance: unset;
   width: 30px;
@@ -222,7 +231,6 @@ h4 {
   border: none;
   z-index: 1;
 }
-
 .checkbox-card:not([disabled]):focus,
 .checkbox-card:not([disabled]):hover {
   box-shadow: 0 0 0.25rem rgba(25, 0, 25, 0.5), -0.125rem -0.125rem 1rem rgba(82, 43, 88, 0.5),

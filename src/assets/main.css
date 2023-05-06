@@ -31,6 +31,10 @@ html, body {
   padding: 0;
 }
 
+.toast-text {
+  text-align: center;
+}
+
 .btn {
   background: linear-gradient(to bottom right, #2B124C, #854F6C);
   border: 0;
@@ -113,13 +117,19 @@ html, body {
 .signin-wrapper {
   margin: 4vh 4vh;
 }
+.signup-text {
+  margin: 2vh;
+}
+.signup-text-two {
+  margin: 1vh;
+}
 .wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
 
-  margin: 12vh 4vh;
+  margin: 6vh 4vh;
 }
 .form-wrapper {
   display: flex;
@@ -159,4 +169,35 @@ html, body {
 }
 .btn-login {
   margin: 2vh 0;
+}
+.main-wrapper-title {
+  text-align: center;
+  line-height: 6vh;
+  font-weight: bold;
+}
+.main-wrapper-text {
+  text-align: center;
+  line-height: 4vh;
+}
+
+@media (min-width: 619px) {
+  #wrapper-home {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 10px;
+  }
+  .task-card-wrapper:nth-child(even) {
+    margin-left: auto;
+  }
+}
+
+@media (min-width: 1025px) {
+  #wrapper-home {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-column-gap: 10px;
+  }
+  .task-card-wrapper:nth-child(3n+2) {
+    margin-left: auto;
+  }
 }

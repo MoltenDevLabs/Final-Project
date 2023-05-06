@@ -16,11 +16,12 @@ const options = {
     pauseOnHover: false,
     draggable: true,
     draggablePercent: 0.6,
-    showCloseButtonOnHover: false,
+    showCloseButtonOnHover: true,
     hideProgressBar: true,
     closeButton: "button",
-    icon: true,
-    rtl: false
+    icon: false,
+    rtl: false,
+    className: 'toast-text'
 }
 
 app.use(createPinia())

@@ -4,13 +4,7 @@ import supabase from '../supabase/index'
 export default defineStore('taskStore', {
   state() {
     return {
-      taskList: []
-    }
-  },
-
-  computed: {
-    taskListSorted() {
-      return [...this.taskList].sort((task1, task2) => task1.id - task2.id); // This is not working
+      taskList: [],
     }
   },
 

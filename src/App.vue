@@ -6,8 +6,9 @@
 </template>
 
 <script>
+import '@/assets/main.css'
+import '@/assets/animations.css'
 import NavbarView from './views/NavbarView.vue'
-import './assets/main.css'
 
 export default {
   name: 'App',
@@ -15,9 +16,10 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 html {
   margin: 0;
   padding: 0;
+  background-color: #FBE4D8;
 }
 </style>

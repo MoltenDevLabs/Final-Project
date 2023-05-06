@@ -1,17 +1,25 @@
 <template>
   <div class="signin-wrapper">
     <div class="wrapper main-wrapper">
-      <h1 class="main-wrapper-title">Hi Boss!</h1>
+      <h1 class="main-wrapper-title">Planning to conquer the world?</h1>
       <h3 class="main-wrapper-text">Welcome to the most evil task manager</h3>
       <button class="btn btn-login" @click="() => togglePopup('signIn')">Log in</button>
+<!--       <button class="btn btn-login" @click="() => signInWithGoogle()">Log in with Google</button> -->
     </div>
 
     <div class="wrapper signup-wrapper">
       <p class="signup-text">Don't have an account?</p>
       <button class="btn btn-signup" @click="() => togglePopup('signUp')">Sign up</button>
+      <p class="signup-text-two">or</p>
+      <button class="btn btn-signup" @click="() => signInWithGoogle()">Sign up with Google</button>
     </div>
 
-    <SignInPopup v-if="popupTriggers.signIn" :togglePopup="() => togglePopup('signIn')">
+    <SignInPopup
+      v-if="popupTriggers.signIn"
+      :togglePopup="() => togglePopup('signIn')"
+      class="zoom-in-popup"
+      :class="zoomOutPopup ? 'zoom-out-popup' : ''"
+    >
       <form class="form-wrapper" @submit.prevent="handleSignIn()">
         <label class="form-label" for="email">Email</label>
         <input
@@ -37,7 +45,12 @@
       </form>
     </SignInPopup>
 
-    <SignUpPopup v-if="popupTriggers.signUp" :togglePopup="() => togglePopup('signUp')">
+    <SignUpPopup
+      v-if="popupTriggers.signUp"
+      :togglePopup="() => togglePopup('signUp')"
+      class="zoom-in-popup"
+      :class="zoomOutPopup ? 'zoom-out-popup' : ''"
+    >
       <form class="form-wrapper" @submit.prevent="validateFormSignup()">
         <label class="form-label" for="email">Email</label>
         <input
@@ -81,7 +94,6 @@
 </template>
 
 <script>
-import '@/assets/main.css'
 import { mapActions, mapState } from 'pinia'
 import userStore from '@/stores/user'
 import SignInPopup from './Popups/SignInPopup.vue'
@@ -105,6 +117,7 @@ export default {
       signupEmailValid: false,
       signupPasswordValid: false,
       signupPasswordTwoValid: false,
+      zoomOutPopup: false,
       popupTriggers: {
         buttonTrigger: false
       },
@@ -119,7 +132,7 @@ export default {
     ...mapState(userStore, ['user'])
   },
   methods: {
-    ...mapActions(userStore, ['signIn', 'signUp']),
+    ...mapActions(userStore, ['signIn', 'signUp', 'signInWithGoogle']),
 
     togglePopup(trigger) {
       this.popupTriggers[trigger] = !this.popupTriggers[trigger]
@@ -145,15 +158,15 @@ export default {
           password: this.password
         }
         await this.signIn(userData)
+        this.zoomOutPopup = true
         this.signinEmailValid = true
         this.signinPasswordValid = true
-        this.toast.success('Hello Boss')
+        this.toast.info('MEOW !!')
         this.$router.push({ name: 'home' })
       } catch (error) {
         this.signinEmailError = true
         this.signinPasswordError = true
         this.toast.error('User not found, try again')
-        console.error(error)
       }
     },
 
@@ -164,11 +177,11 @@ export default {
           password: this.password
         }
         await this.signUp(userData)
-        this.toast.success('Hello Boss')
+        this.zoomOutPopup = true
+        this.toast.info('MEOW !!')
         this.$router.push({ name: 'home' })
       } catch (error) {
         this.toast.error("Couldn't sign up, try again")
-        console.error(error)
       }
     },
 

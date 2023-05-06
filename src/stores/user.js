@@ -1,41 +1,66 @@
-import { defineStore } from 'pinia';
-import supabase from '../supabase/index';
+import { defineStore } from 'pinia'
+import supabase from '../supabase/index'
 
 export default defineStore('userStore', {
   state: () => ({
-    user: undefined,
+    user: undefined
   }),
 
   actions: {
-    async fetchUser () {
-      const { data: { user } } = await supabase.auth.getUser();
+    async fetchUser() {
+      const {
+        data: { user }
+      } = await supabase.auth.getUser()
 
       this.user = user
-     // if (!user) throw new Error('User not found')
+      // if (!user) throw new Error('User not found')
     },
 
-    async signUp ({ email, password }) {
-      const { data: { user }, error } = await supabase.auth.signUp({
+    async signUp({ email, password }) {
+      const {
+        data: { user },
+        error
+      } = await supabase.auth.signUp({
         email,
-        password,
-      });
-      if (error) throw error;
-      if (user) this.user = user;
+        password
+      })
+      if (error) throw error
+      if (user) this.user = user
     },
 
     async signIn({ email, password }) {
-      const { data: { user }, error } = await supabase.auth.signInWithPassword({
+      const {
+        data: { user },
+        error
+      } = await supabase.auth.signInWithPassword({
         email,
-        password,
-      });
-      if (error) throw error;
-      if (user) this.user = user;
+        password
+      })
+      if (error) throw error
+      if (user) this.user = user
+    },
+
+    async signInWithGoogle() {
+      const {
+        data: { user },
+        error
+      } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          queryParams: {
+            access_type: 'offline',
+            prompt: 'consent'
+          }
+        }
+      })
+      if (error) throw error
+      if (user) this.user = user
     },
 
     async signOut() {
-      const { error } = await supabase.auth.signOut();
-      if (error) throw error;
-      this.user = null;
+      const { error } = await supabase.auth.signOut()
+      if (error) throw error
+      this.user = null
     },
 
     persist: {
@@ -46,5 +71,6 @@ export default defineStore('userStore', {
           storage: localStorage
         }
       ]
-    },
-}});
+    }
+  }
+})

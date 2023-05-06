@@ -15,7 +15,7 @@ export default {
     togglePopup: {
       type: Function,
       required: true
-    },
+    }
   }
 }
 </script>

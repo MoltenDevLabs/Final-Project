@@ -9,7 +9,6 @@
 </template>
 
 <script>
-import '@/assets/main.css'
 export default {
   name: 'SignInPopup',
   props: {

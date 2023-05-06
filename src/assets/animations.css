@@ -1,0 +1,79 @@
+.task-card-in {
+  animation: slide-in 0.2s ease-in forwards;
+}
+.task-card-out {
+  animation: slide-out 0.2s ease-in forwards;
+}
+@keyframes slide-in {
+  0% {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes slide-out {
+  0% {
+    opacity: 1;
+    transform: translateX(0%);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+}
+
+.zoom-in-popup {
+  animation: zoom-in 0.2s ease-in forwards;
+}
+.zoom-out-popup {
+  animation: zoom-out 0.2s ease-out forwards;
+}
+@keyframes zoom-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.2);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes zoom-out {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.2);
+  }
+}
+
+.logo-logout-hidden {
+  position: absolute;
+  top: 50%;
+  left: 45%;
+  width: 10px;
+  height: 10px;
+  opacity: 0;
+}
+.logo-logout {
+  display: block;
+  opacity: 1;
+  animation: logo-expand 1s ease-in-out forwards;
+}
+
+@keyframes logo-expand {
+  0% {
+    transform: scale(10);
+  }
+  50% {
+    transform: scale(150);
+  }
+  100% {
+    transform: scale(0);
+  }
+}
