@@ -2,8 +2,8 @@
   <div class="task-card-wrapper">
     <div class="top-line-card-wrapper">
       <div class="card-title-wrapper">
-        <h4 v-if="task.title.length <= 18" class="task-card-title">{{ task.title }}</h4>
-        <h4 v-else class="task-card-title">{{ task.title.substring(0, 19) + '...' }}</h4>
+        <h4 v-if="task.title.length <= 20" class="task-card-title">{{ task.title }}</h4>
+        <h4 v-else class="task-card-title">{{ task.title.substring(0, 21) + '...' }}</h4>
       </div>
 
       <div class="btn-card-wrapper">
