@@ -1,9 +1,203 @@
-@import './base.css';
+/*  Palette
+
+CSS HEX
+
+--eggplant dark: #190019 rgb(25, 0, 25)
+--purple: #2B124C
+--light purple: #522B58 rgb(82, 43, 88)
+--ultra light purple: #854F6C
+--dark white: #DFB6B2 rgb(223, 182, 178)
+--white: #FBE4D8
+ */
+
+@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed');
+
+
+html, body {
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 2.2;
+  margin: 0;
+  padding: 0;
+}
 
 #app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 2.2;
+  margin: 0;
+  padding: 0;
+}
 
-  font-weight: normal;
+.toast-text {
+  text-align: center;
+}
+
+.btn {
+  background: linear-gradient(to bottom right, #2B124C, #854F6C);
+  border: 0;
+  border-radius: 12px;
+  color: #FBE4D8;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 2.2;
+  outline: transparent;
+  padding: 0 1rem;
+  text-align: center;
+  text-decoration: none;
+  transition: box-shadow .2s ease-in-out;
+  user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+}
+.btn:not([disabled]):focus {
+  box-shadow: 0 0 .25rem rgba(25, 0, 25, 0.5), -.125rem -.125rem 1rem rgba(82, 43, 88, 0.5), .125rem .125rem 1rem rgba(223, 182, 178, 0.5);
+}
+.btn:not([disabled]):hover {
+  box-shadow: 0 0 .25rem rgba(25, 0, 25, 0.5), -.125rem -.125rem 1rem rgba(82, 43, 88, 0.5), .125rem .125rem 1rem rgba(223, 182, 178, 0.5);
+}
+
+/* POPUP STYLES */
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 99;
+  background-color: rgba(25, 0, 25, 0.5);
+
+  backdrop-filter: blur(4px);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.popup-inner {
+  background: #FBE4D8;
+  border-radius: 12px;
+  margin: 0;
+  position: relative;
+}
+.btn-popup-close {
+  position: absolute;
+  top: 3%;
+  right: 3%;
+  height: 1.5em;
+  width: 1.5em;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-popup-close::before,
+.btn-popup-close::after {
+  content: "";
+  position: absolute;
+  width: 2px;
+  height: 1em;
+  background-color: #FBE4D8;
+}
+
+.btn-popup-close::before {
+  transform: rotate(45deg);
+}
+
+.btn-popup-close::after {
+  transform: rotate(-45deg);
+}
+
+/* FORM STYLES */
+
+.signin-wrapper {
+  margin: 4vh 4vh;
+}
+.signup-text {
+  margin: 2vh;
+}
+.signup-text-two {
+  margin: 1vh;
+}
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  margin: 6vh 4vh;
+}
+.form-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  border: 1px solid #190019;
+  border-radius: 12px;
+  box-shadow: 0 0 2rem rgba(25, 0, 25, 0.5), 0rem 0rem 2rem rgba(82, 43, 88, 0.5), 0rem 0rem 2rem rgba(223, 182, 178, 0.5);
+
+  padding: 32px;
+}
+.form-label {
+  margin-top: 1vh;
+}
+.form-input {
+  margin-top: 0vh;
+  line-height: 1.5em;
+  padding-left: 0.5em;
+  resize: none
+}
+.form-error {
+  border: 2px solid red;
+  border-radius: 4px;
+}
+.form-valid {
+  border: 2px solid green;
+  border-radius: 4px;
+}
+.btn-form {
+  margin-top: 4vh;
+}
+.main-wrapper-text {
+  margin: 2vh 0;
+  text-align: center;
+}
+.btn-login {
+  margin: 2vh 0;
+}
+.main-wrapper-title {
+  text-align: center;
+  line-height: 6vh;
+  font-weight: bold;
+}
+.main-wrapper-text {
+  text-align: center;
+  line-height: 4vh;
+}
+
+@media (min-width: 619px) {
+  #wrapper-home {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 10px;
+  }
+  .task-card-wrapper:nth-child(even) {
+    margin-left: auto;
+  }
+}
+
+@media (min-width: 1025px) {
+  #wrapper-home {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-column-gap: 10px;
+  }
+  .task-card-wrapper:nth-child(3n+2) {
+    margin-left: auto;
+  }
 }
