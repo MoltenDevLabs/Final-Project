@@ -1,8 +1,8 @@
 <template>
   <div class="signin-wrapper">
     <div class="wrapper main-wrapper">
-      <h1 class="main-wrapper-title">Planning to conquer the world?</h1>
-      <h3 class="main-wrapper-text">Welcome to the most evil task manager</h3>
+      <h1 class="main-wrapper-title">Welcome to the most evil task manager</h1>
+      <h3 class="main-wrapper-text">Never again forget your evil deeds</h3>
       <button class="btn btn-login" @click="() => togglePopup('signIn')">Log in</button>
       <!--       <button class="btn btn-login" @click="() => signInWithGoogle()">Log in with Google</button> -->
     </div>
