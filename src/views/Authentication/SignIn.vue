@@ -209,8 +209,9 @@ export default {
       } else if (this.password === this.passwordTwo) {
         this.signupPasswordTwoError = false
         this.signupPasswordTwoValid = true
+      } else {
+        this.handleSignUp()
       }
-      this.handleSignUp()
     }
   }
 }
