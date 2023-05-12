@@ -35,6 +35,8 @@ body {
   text-align: center;
 }
 
+/* BUTTON & POPUP STYLES */
+
 .btn {
   background: linear-gradient(to bottom right, #2b124c, #854f6c);
   border: 0;
@@ -62,8 +64,6 @@ body {
   box-shadow: 0 0 0.25rem rgba(25, 0, 25, 0.5), -0.125rem -0.125rem 1rem rgba(82, 43, 88, 0.5),
     0.125rem 0.125rem 1rem rgba(223, 182, 178, 0.5);
 }
-
-/* POPUP STYLES */
 .popup {
   position: fixed;
   top: 0;
@@ -112,6 +112,15 @@ body {
 
 .btn-popup-close::after {
   transform: rotate(-45deg);
+}
+.btn-clear-tasks {
+  line-height: 3vh;
+}
+.btn-form {
+  margin-top: 4vh;
+}
+.btn-login {
+  margin: 2vh 0;
 }
 
 /* FORM STYLES */
@@ -163,16 +172,12 @@ body {
   border: 2px solid green;
   border-radius: 4px;
 }
-.btn-form {
-  margin-top: 4vh;
-}
+
 .main-wrapper-text {
   margin: 2vh 0;
   text-align: center;
 }
-.btn-login {
-  margin: 2vh 0;
-}
+
 .main-wrapper-title {
   text-align: center;
   line-height: 6vh;
@@ -182,6 +187,87 @@ body {
   text-align: center;
   line-height: 4vh;
 }
+
+.logout-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+ul {
+  list-style: none;
+  padding: 1vh;
+  margin: 0;
+}
+li {
+  margin: 1vh 0;
+}
+.text-without-tasks {
+  align-items: center;
+  display: flex;
+  margin: 4vh;
+  justify-content: center;
+  border: 6px solid #522b58;
+  border-radius: 12px;
+}
+
+/* NAVBAR STYLES */
+
+.wrapper-nav {
+  height: 8vh;
+  width: 100%;
+  position: relative;
+  background: linear-gradient(to left, #2b124c 0%, #854f6c 50%, #2b124c 100%);
+  margin-bottom: 2vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  z-index: 0;
+}
+
+.wrapper-nav:before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('@/assets/logo.svg');
+  background-repeat: repeat;
+  background-position: center;
+  background-size: contain;
+  opacity: 0.7;
+  z-index: 1;
+}
+
+.navbar-title {
+  color: #fbe4d8;
+  width: 100%;
+  text-align: center;
+  z-index: 2;
+}
+
+.subnavbar-wrapper {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 1.5vh;
+}
+.subnavbar-wrapper-right {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.subnavbar-wrapper-right {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+/* MEDIA QUERIES */
 
 @media (min-width: 619px) {
   #wrapper-home {
